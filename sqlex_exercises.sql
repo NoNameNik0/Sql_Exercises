@@ -178,11 +178,54 @@ WHERE numGuns >=10;
 Вывести: HD
 */
 
-
 SELECT hd 
 FROM PC
 GROUP BY hd
 HAVING COUNT(*)>=2
+
+
+--ex16
+/*
+Найдите пары моделей PC, имеющих одинаковые скорость и RAM. 
+В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), 
+Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM
+*/
+
+SELECT DISTINCT t.model, l.model, t.speed, t.ram
+FROM PC as t JOIN PC as l
+ON t.speed = l.speed AND t.ram = l.ram
+AND t.model>l.model
+
+
+--ex17
+/*
+Найдите модели ПК-блокнотов, скорость которых меньше скорости каждого из ПК.
+Вывести: type, model, speed
+*/
+
+SELECT DISTINCT p.type,lp.model,lp.speed
+FROM Product p JOIN Laptop lp
+ON lp.model = p.model
+WHERE lp.speed < ALL(SELECT speed FROM PC)
+
+
+--ex18
+/*
+Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+*/
+
+SELECT DISTINCT p.maker, pr.price
+FROM product p
+JOIN printer pr ON p.model = pr.model
+WHERE pr.color = 'y'
+  AND pr.price = (
+     SELECT MIN(price)
+     FROM printer
+     WHERE color = 'y'
+)
+  
+
+
 
 
 
