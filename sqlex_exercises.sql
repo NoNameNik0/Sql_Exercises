@@ -223,7 +223,33 @@ WHERE pr.color = 'y'
      FROM printer
      WHERE color = 'y'
 )
-  
+
+
+ --ex19
+ /*
+Для каждого производителя, имеющего модели в таблице Laptop, 
+найдите средний размер экрана выпускаемых им ПК-блокнотов.
+Вывести: maker, средний размер экрана
+ */
+
+SELECT p.maker, AVG(screen)AS avg_scr
+FROM Product p JOIN Laptop l ON p.model = l.model
+GROUP BY p.maker
+
+
+--ex20
+/*
+Найдите производителей, выпускающих по меньшей мере три различных модели ПК. 
+Вывести: Maker, число моделей ПК
+*/
+
+SELECT maker, COUNT(DISTINCT model) AS model_count
+FROM Product
+WHERE type = 'PC'
+GROUP BY maker
+HAVING COUNT(DISTINCT model) >= 3;
+
+
 
 
 
