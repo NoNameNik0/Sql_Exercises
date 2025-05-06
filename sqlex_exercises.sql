@@ -291,6 +291,36 @@ FROM Product p JOIN Laptop l ON p.model = l.model
 WHERE l.speed>=750 AND p.type = 'Laptop'
 
 
+--ex24
+/*
+Перечислите номера моделей любых типов, 
+имеющих самую высокую цену по всей имеющейся в базе данных продукции
+*/
+
+WITH MaxPriceAllProduct As (
+SELECT p.model,pc.price
+FROM Product p JOIN PC pc ON p.model = pc.model
+WHERE p.type = 'PC'
+
+UNION
+SELECT p.model, l.price
+FROM Product p JOIN Laptop l ON p.model = l.model
+WHERE p.type = 'Laptop'
+
+UNION
+SELECT p.model, pr.price
+FROM Product p JOIN Printer pr ON p.model = pr.model
+WHERE p.type = 'Printer'
+)
+
+SELECT model
+FROM MaxPriceAllProduct
+WHERE price = (SELECT MAX(price)mxpr FROM MaxPriceAllProduct)
+
+
+
+
+
 
 
 
